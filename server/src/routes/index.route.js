@@ -1,8 +1,8 @@
-const router = require("express").Router();
-const InitiativeRouter = require("./initiative.route");
-const formatResponse = require("../utils/formatResponse");
+const router = require('express').Router();
+const UserRouter = require('./user.router');
+const formatResponse = require('../utils/formatResponse');
 
-router.use("/initiative", InitiativeRouter);
+router.use('/users', UserRouter);
 
 router.use("*", (req, res) => {
   res.status(404).json(formatResponse(404, "Not found"));
