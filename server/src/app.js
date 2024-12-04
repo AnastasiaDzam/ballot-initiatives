@@ -1,24 +1,20 @@
-const path = require('path'); //* Импорт библиотеки path
-require('dotenv').config({ path: path.resolve(__dirname, '..', '.env') }); //* Подключение переменных окружения
-const express = require('express'); //* Импорт библиотеки express
+
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '..', '.env') });
+const express = require('express');
 const serverConfig = require('./config/serverConfig');
 const indexRouter = require('./routes/index.routes');
 
-const app = express(); //* Заводим экземпляр приложения
+const app = express(); 
 
-serverConfig(app); //* Прогоняем экземпляр приложения через функцию обучения
+serverConfig(app);
 
-const PORT = process.env.PORT || 3000; //* указываем порт, который будет слушать сервер
+const PORT = process.env.PORT || 3000;
 
-app.use((req, res, next) => {
-  //* кастомная мидлварка
-  next(); //* пускает дальше
-  console.log('Собака сутулая'); //* логирует
-});
+app.use('/api', indexRouter);
 
-app.use('/api', indexRouter); //* подключаем весь пакет маршрутов на /api
 
-//* Старт сервера - прослушивание определенного порта
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
 });
+

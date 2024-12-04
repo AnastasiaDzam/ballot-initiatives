@@ -1,0 +1,69 @@
+---Установка npm-модулей!---
+1).
+  1. npm init -y; //инициализируем проект;
+  2. npx gitignore node; //создаем гитигнор;
+  3. npx eslit --init; //eslit;
+  4. npm i sequelize pg pg-hstore sequelize-cli; //sequelize;
+  5. npm i express; //фреймворк для работы с сервером;
+  6. npm i morgan; // выводит в консоль инф.запрос-ответ;
+  7. npm i -D nodemon; // перезапускает сервер при изменении файлов;
+  8. npm i dotenv; // фича для работы переменных свободного окружения; 
+
+  Создаем папку src(сервер) внутри проекта;
+2).
+  1. Создаем файл .sequelizerc, в нем добавляем в путь 'src';
+  2. npx sequelize init; //включаем sequelize;
+  3. Создаем .env_example:
+    - DB=[dialect]://[user]:[password]@[host]:[XXXX]/[database]
+      PORT=XXXX
+  4. Создаем .env:
+    - DB=postgres://postgres:postgres@localhost:5432/название_database
+      PORT=3000
+  5. В ./src/db/config/database.json нужно поменять файлы на:  //для работы dotenv;
+    {
+  "development": {
+    "use_env_variable": "DB"
+  },
+  "test": {
+  "use_env_variable": "DB"
+  },
+  "production": {
+   "use_env_variable": "DB"
+  }
+}
+
+3.) -- Создать главный файл app.js: --
+  1. const express = require('express'); //вкл. express;
+  2. require('dotenv').config(); //подключаем файл dotenv;
+  3. const app = express(); //создаем экземпляр класса express;
+     const PORT = process.env.PORT || 3000; //пишем порт, вместе с dotenv;
+  4. app.listen(PORT, () => {               //пишем слушатель для порта 3000;
+     console.log('Server started, 3000!')});
+
+4). -- Создаем папку ./src/config --
+  1. В ней файл serverConfig.js //в этом файле мы описываем все, что происходит на этапе конфигурации;
+    - const express = require('express'); //вкл. express;
+    - const morgan = require('morgan'); //включаем морган;
+    - const path = require('path') //подключаем путь (библиотеку path);
+    - Пишем здесь промежуточное ПО, функцию serverConfig(), которая принимает(app.use) конфиги и мидл-варки;
+    - module.exports = serverConfig; //экспорт app, идет дальше;
+
+5.) -- Создаем папку ./src/utils --
+  1. В ней создаем утилиты - вспомогательные функции, которые модифицируют, проверяют данные и возвращают ошибки;
+     Утилиты помогают обработчикам работать с файлами;
+    - Для каждой утилиты отдельный файл;
+    - module.exports = TaskValidator; // в конце экспорт для каждого файла;
+
+6). -- Создаем папку ./srs/services --
+  1. В ней создаем вспомогательные файлы для каждой сущности
+
+  npx sequelize model:generate --name Task --attributes title:string,body:string
+
+7). -- Создаем папку controller ---
+
+8). -- Создаем папку routes ---
+
+
+
+
+

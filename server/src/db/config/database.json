@@ -3,6 +3,7 @@
     "use_env_variable": "DB"
   },
   "test": {
+
     "use_env_variable": "DB"
   },
   "production": {
