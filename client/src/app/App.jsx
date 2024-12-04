@@ -1,9 +1,9 @@
-import HedgehogsPage from '../pages/HedgehogsPage/HedgehogsPage';
-import TasksPage from '../pages/TasksPage/TasksPage';
+import UsersPage from '../pages/UsersPage/UsersPage';
+import InitiativesPage from '../pages/InitiativesPage/InitiativesPage';
 import MainPage from '../pages/MainPage/MainPage';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Navigation from '../widgets/Navigation/Navigation';
-import OneTaskPage from '../pages/OneTaskPage/OneTaskPage';
+import OneInitiativePage from '../pages/OneInitiativePage/OneInitiativePage';
 import SignInPage from '../pages/SignInPage/SignInPage.jsx';
 import SignUpPage from '../pages/SignUpPage/SignUpPage.jsx';
 import { useEffect, useState } from 'react';
@@ -42,15 +42,15 @@ function App() {
         { path: '/signin', element: <SignInPage setUser={setUser} /> },
         { path: '/signup', element: <SignUpPage setUser={setUser} /> },
         {
-          path: '/tasks',
+          path: '/initiatives',
           element: user ? (
-            <TasksPage user={user} />
+            <InitiativesPage user={user} />
           ) : (
             <SignInPage setUser={setUser} />
           ),
         },
-        { path: '/tasks/:id', element: <OneTaskPage /> },
-        { path: '/hedgehogs', element: <HedgehogsPage /> },
+        { path: '/initiatives/:id', element: <OneInitiativePage /> },
+        { path: '/users', element: <UsersPage /> },
       ],
     },
   ]);

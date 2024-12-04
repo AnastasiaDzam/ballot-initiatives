@@ -27,7 +27,7 @@ class InitiativeController {
     }
   }
 
-  static async getInitiativekById(req, res) {
+  static async getInitiativeById(req, res) {
     const { id } = req.params; // req.params - объект параметров у адресной строки 
 
     //! Проверка на валидность ID (обработка негативного кейса)

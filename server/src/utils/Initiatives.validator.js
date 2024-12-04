@@ -2,7 +2,7 @@
 class InitiativeValidator {
   static validate(data) {
     const { title, content, level, user_id } = data;
-
+    const userN = +user_id;
     if (!title || typeof title !== "string" || title.trim() === "") {
       return {
         isValid: false,
@@ -22,11 +22,7 @@ class InitiativeValidator {
         isValid: false,
         error: "Level is required and must be a non-empty string",
       };
-    } else if (
-      !user_id ||
-      typeof user_id !== "number" ||
-      user_id.trim() === ""
-    ) {
+    } else if (!userN || typeof userN !== "number") {
       return {
         isValid: false,
         error: "User_id is required and must be a non-empty string",

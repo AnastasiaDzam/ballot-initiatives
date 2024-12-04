@@ -1,18 +1,18 @@
 import { useEffect, useState } from 'react';
-import TasksList from '../../widgets/TasksList/TasksList';
-import TaskForm from '../../widgets/TaskForm/TaskForm';
+import InitiativesList from '../../widgets/InitiativesList/InitiativesList';
+import InitiativeForm from '../../widgets/InitiativeForm/InitiativeForm';
 import { message as antMessage } from 'antd'; //! импорт сообщения из antd с переименованием в antMessage
-import TaskApi from '../../entities/task/TaskApi'; //! импорт класса TaskApi, с помощью него будем делать запросы
+import InitiativeApi from '../../entities/initiative/InitiativeApi'; //! импорт класса InitiativeApi, с помощью него будем делать запросы
 
-export default function TasksPage({ user }) {
-  const [tasks, setTasks] = useState([]); //* стейт под все задачи
+export default function InitiativesPage({ user }) {
+  const [initiatives, setInitiatives] = useState([]); //* стейт под все задачи
   const [loading, setLoading] = useState(false); //* стейт под состояние загрузки
   // const [error, setError] = useState(null); //! пример стейта под состояние ошибки
 
-  const loadTasks = async () => {
+  const loadInitiatives = async () => {
     setLoading(true); //! включаем загрузку данных
     try {
-      const { data, message, error, statusCode } = await TaskApi.getTasks(); //! получаем данные от класса
+      const { data, message, error, statusCode } = await InitiativeApi.getInitiatives(); //! получаем данные от класса
       // const { data, message, error, statusCode } = await response.json();
       if (error) {
         //! если ошибка пришла с бэка
@@ -23,7 +23,7 @@ export default function TasksPage({ user }) {
       antMessage.success(message); //! в любом случае показываем сообщение пользователю
       if (statusCode === 200) {
         //! если все прошло успешно и статус нужный
-        setTasks(data); //! то записываем данные в стейт
+        setInitiatives(data); //! то записываем данные в стейт
       }
     } catch (error) {
       //! если упали непредсказуемо
@@ -42,11 +42,8 @@ export default function TasksPage({ user }) {
 
   //* V3 - подгружаем данные по задачам на этапе монтирования компонента в DOM
   useEffect(() => {
-    loadTasks();
+    loadInitiatives();
   }, []);
-
-  //! V-broken (как не надо)
-  // useEffect(loadTasks, []);
 
   //! Пример выключения сообщения об ошибке через 3 секунды
   // useEffect(() => {
@@ -63,8 +60,8 @@ export default function TasksPage({ user }) {
     <div>
       {loading && <h3>Загрузка...</h3>}
       {/* {error && <h3 style={{ color: 'red' }}>{error}</h3>} */}
-      {user && <TaskForm setTasks={setTasks} setLoading={setLoading} />}
-      <TasksList tasks={tasks} setTasks={setTasks} user={user} />
+      {user && <InitiativeForm setInitiatives={setInitiatives} setLoading={setLoading} />}
+      <InitiativesList initiatives={initiatives} setInitiatives={setInitiatives} user={user} />
     </div>
   );
 }

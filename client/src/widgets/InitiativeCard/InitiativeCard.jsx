@@ -1,30 +1,30 @@
-import styles from './TaskCard.module.css';
+import styles from './InitiativeCard.module.css';
 import React, { useState } from 'react';
 import Button from '../../shared/ui/Button/Button';
 import { message as antMessage } from 'antd';
-import TaskApi from '../../entities/task/TaskApi';
-import TaskUpdateForm from '../TaskUpdateForm/TaskUpdateForm';
+import InitiativeApi from '../../entities/initiative/InitiativeApi';
+import InitiativeUpdateForm from '../InitiativeUpdateForm/InitiativeUpdateForm';
 import { useNavigate } from 'react-router-dom';
 
-export default function TaskCard({ task, setTasks, user }) {
+export default function InitiativeCard({ initiative, setInitiatives, user }) {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [showUpdateForm, setShowUpdateForm] = useState(false);
 
-  async function deleteTaskHandler(title) {
-    if (user.id !== task.userId) {
-      antMessage.error(`No rights to delete task with id ${task.id}`);
+  async function deleteInitiativeHandler(title) {
+    if (user.id !== initiative.userId) {
+      antMessage.error(`No rights to delete initiative with id ${initiative.id}`);
       return;
     }
     setLoading(true);
     try {
-      // const response = await fetch(`/api/tasks/${task.id}`, {
+      // const response = await fetch(`/api/initiatives/${initiative.id}`, {
       //   method: 'DELETE',
       // });
 
       // const { data, message, error, statusCode } = await response.json();
-      const { data, message, error, statusCode } = await TaskApi.deleteTaskById(
-        task.id
+      const { data, message, error, statusCode } = await InitiativeApi.deleteInitiativeById(
+        initiative.id
       );
 
       console.log(data);
@@ -34,7 +34,7 @@ export default function TaskCard({ task, setTasks, user }) {
         return;
       }
       if (statusCode === 200) {
-        setTasks((prev) => [...prev].filter((el) => el.id !== data.id));
+        setInitiatives((prev) => [...prev].filter((el) => el.id !== data.id));
         antMessage.success(message);
       }
     } catch (error) {
@@ -47,20 +47,20 @@ export default function TaskCard({ task, setTasks, user }) {
   }
 
   function redirectButtonHandler() {
-    navigate(`/tasks/${task.id}`);
+    navigate(`/initiatives/${initiative.id}`);
   }
 
   return (
-    <div className={styles.container} key={task.title}>
-      <span>{task.title}</span>
-      <span>{task.body}</span>
+    <div className={styles.container} key={initiative.title}>
+      <span>{initiative.title}</span>
+      <span>{initiative.body}</span>
       <Button text='Подробнее' color='blue' onClick={redirectButtonHandler} />
-      {user.id === task.userId && (
+      {user.id === initiative.userId && (
         <>
           <Button
             text='Удалить'
             color='red'
-            onClick={() => deleteTaskHandler(task.title)}
+            onClick={() => deleteInitiativeHandler(initiative.title)}
           />
           <Button
             text={showUpdateForm ? 'Скрыть' : 'Изменить'}
@@ -69,11 +69,11 @@ export default function TaskCard({ task, setTasks, user }) {
           />
         </>
       )}
-      {showUpdateForm && user.id === task.userId && (
-        <TaskUpdateForm
+      {showUpdateForm && user.id === initiative.userId && (
+        <InitiativeUpdateForm
           user={user}
-          task={task}
-          setTasks={setTasks}
+          initiative={initiative}
+          setInitiatives={setInitiatives}
           setLoading={setLoading}
           setShowUpdateForm={setShowUpdateForm}
         />

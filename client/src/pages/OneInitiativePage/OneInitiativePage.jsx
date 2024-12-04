@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import TaskApi from '../../entities/task/TaskApi';
+import InitiativeApi from '../../entities/initiative/InitiativeApi';
 import { message as antMessage } from 'antd';
 
-export default function OneTaskPage() {
+export default function OneInitiativePage() {
   const { id } = useParams();
-  const [task, setTask] = useState(null);
+  const [initiative, setInitiative] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    TaskApi.getTaskById(+id)
+    InitiativeApi.getInitiativeById(+id)
       .then(({ statusCode, data, error, message }) => {
         if (error) {
           antMessage.error(error);
@@ -17,7 +17,7 @@ export default function OneTaskPage() {
         }
         antMessage.success(message);
         if (statusCode === 200) {
-          setTask(data);
+          setInitiative(data);
         }
       })
       .catch((err) => {
@@ -33,7 +33,7 @@ export default function OneTaskPage() {
   return (
     <div>
       {loading && <h3>Загрузка...</h3>}
-      {task && <div>{task.title}</div>}
+      {initiative && <div>{initiative.title}</div>}
     </div>
   );
 }

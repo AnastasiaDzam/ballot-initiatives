@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import Button from '../../shared/ui/Button/Button';
 import { message as antMessage } from 'antd';
-import TaskApi from '../../entities/task/TaskApi';
+import InitiativeApi from '../../entities/initiative/InitiativeApi';
 
-export default function TaskUpdateForm({
+export default function InitiativeUpdateForm({
   user,
-  task,
-  setTasks,
+  initiative,
+  setInitiatives,
   setLoading,
   setShowUpdateForm,
 }) {
-  const [inputs, setInputs] = useState({ title: task.title, body: task.body });
+  const [inputs, setInputs] = useState({ title: initiative.title, body: initiative.body });
 
   const isEmptyFormData =
     inputs.title.trim().length === 0 || inputs.body.trim().length === 0;
@@ -20,9 +20,9 @@ export default function TaskUpdateForm({
     setInputs((prev) => ({ ...prev, [name]: value }));
   }
 
-  async function sendUpdatedTask() {
-    if (user.id !== task.userId) {
-      antMessage.error(`No rights to update task with id ${task.id}`);
+  async function sendUpdatedInitiative() {
+    if (user.id !== initiative.userId) {
+      antMessage.error(`No rights to update initiative with id ${initiative.id}`);
       return;
     }
     if (isEmptyFormData) {
@@ -31,8 +31,8 @@ export default function TaskUpdateForm({
     }
     setLoading(true);
     try {
-      const { data, message, error, statusCode } = await TaskApi.updateTaskById(
-        task.id,
+      const { data, message, error, statusCode } = await InitiativeApi.updateInitiativeById(
+        initiative.id,
         inputs
       );
       if (error) {
@@ -41,7 +41,7 @@ export default function TaskUpdateForm({
       }
       antMessage.success(message);
       if (statusCode === 200) {
-        setTasks((prev) => prev.map((el) => (el.id === data.id ? data : el)));
+        setInitiatives((prev) => prev.map((el) => (el.id === data.id ? data : el)));
         setInputs({ title: '', body: '' });
         setShowUpdateForm(false);
       }
@@ -67,7 +67,7 @@ export default function TaskUpdateForm({
         placeholder='body'
         onChange={changeInputsHandler}
       />
-      <Button text='Сохранить' onClick={sendUpdatedTask} />
+      <Button text='Сохранить' onClick={sendUpdatedInitiative} />
     </div>
   );
 }
