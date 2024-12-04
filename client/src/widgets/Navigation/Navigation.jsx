@@ -70,6 +70,7 @@ export default function Navigation({ user, setUser }) {
         )}
       </div>
       <Outlet />
+      
       <Footer/>
     </div>
   );
