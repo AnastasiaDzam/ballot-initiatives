@@ -8,21 +8,13 @@ const PORT = process.env.PORT || 3001; //назначаем порт;
 const app = express(); //экземпляр express;
 
 app.get('/', (req, res) => {
-    res.send(`<div style='margin-top: 30px'>СОБАНЯ!!!</div>`)
+    res.send(`<div style='margin-top: 30px'>Работает!</div>`)
 })
-
 
 serverConfig(app);  //ЗДЕСЬ app проходит через ЭТАП КОНФИГИ;
 
-
-
-
 app.use('/api', indexRoutes);
 
-
-
-
-
 app.listen(PORT, () => {    //слушаем порт 3000;
-    console.log(`Server started, on ${PORT}!`); //консолим че-то при запуске сервера;
+    console.log(`Server started, on ${PORT}!`); //консолим что работает при запуске сервера;
 });

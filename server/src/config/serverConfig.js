@@ -5,7 +5,7 @@ const morgan = require('morgan');  //импорт морган;
 const removeHTTPHeader = require('../middleware/removeHeader');  //импорт самодельной ПО middle-ware;
 const path = require('path') //подключаем путь (библиотеку path);
 
-//middle-ware;
+//middle-ware системные из под капота;
 const serverConfig = (app) => {   //функция, которая будет ПРИНИМАТЬ APP и ПОДКЛЮЧАТЬ КОНФИГИ к app;
     app.use(express.urlencoded({ extended: true }));  //для раскодировки запроса, позволяет работать с телом запроса;
     app.use(express.json());  //для чтения в формате JSON (парсинг json);
