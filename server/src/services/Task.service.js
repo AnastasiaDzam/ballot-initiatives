@@ -1,40 +1,45 @@
-//сервисы нужны для реализации gcad операций с базой данных;
-
-//для работы сервисов нужна модель базы данных
-//если нет - накатить сейчас;
-//try - catch здесь не пишут, а в контроллере;
-const { Task } = require('../db/models'); 
-
 class TaskService {
-    static async getAll() {
-        return await Task.findAll(); //найти все;
-    }
 
-    static async getById(id) {
-        return await Task.findByPk(id); //найти по id;
-    }
+  static async getAll() {
+    return await Task.findAll({
+      include: [{ model: User }],
+    });
+  }
 
-    static async create(data) {
-        return await Task.create(data); //создать(data - создаваемые данные); 
-    }
+  //* Найти задачу по ID
+  static async getById(id) {
+    return await Task.findOne({
+      where: { id },
+      include: [{ model: User }],
+    });
+  }
 
-    static async update(id, data) { //записать (id - куда записать, data - что записать);
-        const task = await this.getById(id); //найти нужное по id;
-        if (task) { 
-            task.title = data.title; //меняем то, что было в сущности на данные из data;
-            task.body = data.body; //меняем то, что было в сущности на данные из data;
-            await task.save(); //сохранить
-        }
-        return task; //вернули новое;
-    }
+  //* Создать новую задачу
+  static async create(data) {
+    const newTask = await Task.create(data);
+    return await this.getById(newTask.id);
+  }
 
-    static async delete(id) {  //удалить(id - что будем удалять);
-        const task = await this.getById(id); //найти по id то, что нужно удалить;
-        if (task) { 
-            await task.destroy(); //удаляем;
-        }
-        return task;
+  //* Обновить задачу по ID
+  static async update(id, data) {
+    const task = await this.getById(id);
+    if (task) {
+      task.title = data.title;
+      task.body = data.body;
+      await task.save();
     }
+    return task; //* Возвращаем обновлённый объект или null
+  }
+
+  //* Удалить задачу по ID
+  static async delete(id) {
+    const task = await this.getById(id);
+    if (task) {
+      await task.destroy();
+    }
+    return task; //* Возвращаем удалённый объект или null
+  }
 }
 
-module.exports = TaskService; //экспорт сервиса TaskService;
+module.exports = TaskService;
+
