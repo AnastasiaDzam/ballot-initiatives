@@ -1,20 +1,20 @@
+
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '..', '.env') });
 const express = require('express');
-require('dotenv').config();
-const serverConfig = require('./config/serverConfig'); //импорт из конфиг;
-const indexRoutes = require('./routes/index.route');
+const serverConfig = require('./config/serverConfig');
+const indexRouter = require('./routes/index.routes');
 
-const PORT = process.env.PORT || 3001; //назначаем порт;
+const app = express(); 
 
-const app = express(); //экземпляр express;
+serverConfig(app);
 
-app.get('/', (req, res) => {
-    res.send(`<div style='margin-top: 30px'>Работает!</div>`)
-})
+const PORT = process.env.PORT || 3000;
 
-serverConfig(app);  //ЗДЕСЬ app проходит через ЭТАП КОНФИГИ;
+app.use('/api', indexRouter);
 
-app.use('/api', indexRoutes);
 
-app.listen(PORT, () => {    //слушаем порт 3000;
-    console.log(`Server started, on ${PORT}!`); //консолим что работает при запуске сервера;
+app.listen(PORT, () => {
+  console.log(`Example app listening on port ${PORT}`);
 });
+

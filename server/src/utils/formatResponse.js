@@ -1,4 +1,3 @@
-//функция, которая форматирует ответ от сервера в один и тот же вид;
 function formatResponse (statusCode, message, data = null, error = null) { 
     return {
         statusCode,
@@ -7,6 +6,5 @@ function formatResponse (statusCode, message, data = null, error = null) {
         error
     };
 };
-
 
 module.exports = formatResponse;

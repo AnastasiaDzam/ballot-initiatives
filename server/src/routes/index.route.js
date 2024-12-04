@@ -4,9 +4,8 @@ const formatResponse = require('../utils/formatResponse');
 
 router.use('/users', UserRouter);
 
-router.use('*', (req, res) => {
-    res.status(404).json(formatResponse(404, 'Not found'));
+router.use("*", (req, res) => {
+  res.status(404).json(formatResponse(404, "Not found"));
 });
-
 
 module.exports = router;

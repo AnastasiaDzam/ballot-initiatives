@@ -1,18 +1,49 @@
-//config - промежуточный этап, где запрос на сервер проходит через промежточное ПО(конфиги) и идет дальше;
 
-const express = require('express');  //импорт экспресс;
-const morgan = require('morgan');  //импорт морган;
-const removeHTTPHeader = require('../middleware/removeHeader');  //импорт самодельной ПО middle-ware;
-const path = require('path') //подключаем путь (библиотеку path);
+require('dotenv').config();
+const express = require('express');
+const path = require('path');
+const cors = require('cors'); //* библиотека позволяющая добавлять заголовки для cors-политики
+const morgan = require('morgan'); //* библиотека позволяющая выводить запросы в лог
+const cookieParser = require('cookie-parser'); //* библиотека позволяющая парсить куки
+const removeHTTPHeader = require('../middleware/removeHeader'); //* наша кастомная мидлварка
 
-//middle-ware системные из под капота;
-const serverConfig = (app) => {   //функция, которая будет ПРИНИМАТЬ APP и ПОДКЛЮЧАТЬ КОНФИГИ к app;
-    app.use(express.urlencoded({ extended: true }));  //для раскодировки запроса, позволяет работать с телом запроса;
-    app.use(express.json());  //для чтения в формате JSON (парсинг json);
-    app.use(morgan('dev'));  //для вывода в консоль инф.о запросах и отв;
-    app.use(removeHTTPHeader); // кастомная промежуточное ПО middle-war;
-    app.use('/static/images', express.static(path.resolve(__dirname, '..', 'public', 'images'))); //учим сервер отдавать статичные файлы из папки /public;
+//NOTE: функция serverConfig, принимающая экземпляр приложения и возвращающая обученный экземпляр
+
+//* достаем путь до клиента из env
+const { CLIENT_URL } = process.env;
+
+//* конфигурация для библиотеки cors
+const corsConfig = {
+  origin: [CLIENT_URL,],
+  credentials: true,
+};
+
+//NOTE промежуточные обработчики, работающие глобально для всего приложения (системные мидлварки)
+const serverConfig = (app) => {
+  //* позволяет работать с телом запроса
+  app.use(express.urlencoded({ extended: true }));
+
+  //* парсит JSON
+  app.use(express.json());
+
+  //* логирует данные о запросах на сервер
+  app.use(morgan('dev'));
+
+  //* парсит куки
+  app.use(cookieParser());
+
+  //* встраивает заголовки для cors-политики
+  app.use(cors(corsConfig));
+
+  //* кастомная мидлварка для удаления HTTP заголовка
+  app.use(removeHTTPHeader);
+
+  //* настройка статики, папка public ассоциирована с маршрутом запроса
+  app.use(
+    '/static/images',
+    express.static(path.resolve(__dirname, '..', 'public', 'images'))
+  );
 };
 
 
-module.exports = serverConfig; //экспорт
+module.exports = serverConfig;
