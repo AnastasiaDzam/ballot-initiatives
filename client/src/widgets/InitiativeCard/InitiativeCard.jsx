@@ -10,24 +10,18 @@ export default function InitiativeCard({ initiative, setInitiatives, user }) {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [showUpdateForm, setShowUpdateForm] = useState(false);
-
+  console.log(user.id)
   async function deleteInitiativeHandler(title) {
-    if (user.id !== initiative.userId) {
+    if (user.id !== initiative.user_id) {
       antMessage.error(`No rights to delete initiative with id ${initiative.id}`);
       return;
     }
     setLoading(true);
     try {
-      // const response = await fetch(`/api/initiatives/${initiative.id}`, {
-      //   method: 'DELETE',
-      // });
-
-      // const { data, message, error, statusCode } = await response.json();
       const { data, message, error, statusCode } = await InitiativeApi.deleteInitiativeById(
+
         initiative.id
       );
-
-      console.log(data);
 
       if (error) {
         antMessage.error(error);
@@ -53,9 +47,9 @@ export default function InitiativeCard({ initiative, setInitiatives, user }) {
   return (
     <div className={styles.container} key={initiative.title}>
       <span>{initiative.title}</span>
-      <span>{initiative.body}</span>
+      <span>{initiative.content}</span>
       <Button text='Подробнее' color='blue' onClick={redirectButtonHandler} />
-      {user.id === initiative.userId && (
+      {user.id === initiative.user_id && (
         <>
           <Button
             text='Удалить'
@@ -69,7 +63,7 @@ export default function InitiativeCard({ initiative, setInitiatives, user }) {
           />
         </>
       )}
-      {showUpdateForm && user.id === initiative.userId && (
+      {showUpdateForm && user.id === initiative.user_id && (
         <InitiativeUpdateForm
           user={user}
           initiative={initiative}

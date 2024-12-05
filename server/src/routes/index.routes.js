@@ -6,6 +6,7 @@ const initiativeRouter = require("./initiative.routes");
 router
 .use("/initiative", initiativeRouter)
 .use("/auth", authRoutes);
+// .use("/users", usersRoutes);
 
 
 router.use("*", (req, res) => {

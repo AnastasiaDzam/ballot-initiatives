@@ -7,17 +7,12 @@ const reformatId = require("../utils/reformatId");
 class InitiativeController {
   static async getAllInitiative(req, res) {
     try {
-      //? За запросы в БД отвечает сервис
       const initiative = await InitiativeService.getAll();
-
-      //! Проверка на длину списка задач (обработка негативного кейса)
       if (initiative.length === 0) {
         return res
           .status(204)
           .json(formatResponse(204, "No initiative found", []));
       }
-
-      //* Успешный кейс
       res.status(200).json(formatResponse(200, "success", initiative));
     } catch ({ message }) {
       console.error(message);

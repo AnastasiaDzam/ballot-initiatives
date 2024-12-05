@@ -5,6 +5,7 @@ import InitiativeCard from '../InitiativeCard/InitiativeCard';
 export default function InitiativesList({ initiatives, setInitiatives, user }) {
   return (
     <div>
+      {console.log(initiatives)}
       {initiatives?.length !== 0 ? (
         initiatives?.map((initiative) => (
           <InitiativeCard key={initiative.id} initiative={initiative} setInitiatives={setInitiatives} user={user} />

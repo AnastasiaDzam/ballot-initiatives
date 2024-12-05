@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import InitiativeApi from '../../entities/initiative/InitiativeApi';
-import { message as antMessage } from 'antd';
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import InitiativeApi from "../../entities/initiative/InitiativeApi";
+import { message as antMessage } from "antd";
 
 export default function OneInitiativePage() {
   const { id } = useParams();
@@ -25,7 +25,7 @@ export default function OneInitiativePage() {
         antMessage.error(err.message);
       })
       .finally(() => {
-        antMessage.info('Загрузка завершена');
+        antMessage.info("Загрузка завершена");
         setLoading(false);
       });
   }, [id]);

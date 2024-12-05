@@ -25,15 +25,6 @@ export default function InitiativeForm({ setInitiatives, setLoading }) {
       const { data, message, error, statusCode } = await InitiativeApi.createInitiative(
         inputs
       );
-      // const response = await fetch('/api/initiatives', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-type': 'application/json',
-      //   },
-      //   body: JSON.stringify(inputs),
-      // });
-      // const { data, message, error, statusCode } = await response.json();
-
       if (error) {
         antMessage.error(error);
         return;

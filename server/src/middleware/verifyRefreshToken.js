@@ -5,6 +5,7 @@ const formatResponse = require('../utils/formatResponse');
 //NOTE Функция для верификации refresh токена
 function verifyRefreshToken(req, res, next) {
   try {
+    
     //* Извлекаем refresh токен из куков запроса
     const { refreshToken } = req.cookies;
 
