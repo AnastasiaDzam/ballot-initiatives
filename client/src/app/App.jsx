@@ -1,5 +1,5 @@
 // import UserPage from "../pages/UserPage/UserPage";
-import InitiativesPage from "../pages/InitiativesPage/InitiativesPage";
+import InitiativesPage from "../pages/InitiativesPage/InitiativesPage.jsx";
 import MainPage from "../pages/MainPage/MainPage";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Navigation from "../widgets/Navigation/Navigation";
