@@ -10,7 +10,7 @@ export default function InitiativeUpdateForm({
   setLoading,
   setShowUpdateForm,
 }) {
-  const [inputs, setInputs] = useState({ title: initiative.title, body: initiative.body });
+  const [inputs, setInputs] = useState({ title: initiative?.title, body: initiative?.body });
 
   const isEmptyFormData =
     inputs.title.trim().length === 0 || inputs.body.trim().length === 0;
@@ -21,8 +21,8 @@ export default function InitiativeUpdateForm({
   }
 
   async function sendUpdatedInitiative() {
-    if (user.id !== initiative.userId) {
-      antMessage.error(`No rights to update initiative with id ${initiative.id}`);
+    if (user.id !== initiative?.userId) {
+      antMessage.error(`No rights to update initiative with id ${initiative?.id}`);
       return;
     }
     if (isEmptyFormData) {

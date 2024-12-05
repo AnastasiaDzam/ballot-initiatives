@@ -36,15 +36,7 @@ export default function Navigation({ user, setUser }) {
       <div className={styles.container}>
         {/* <Button text='main' onClick={() => navigate('/')} /> */}
 
-        {user && (
-          <>
-            <span>{user.username}</span>{' '}
-            <Button text='signOut' onClick={signOutHandler} />{' '}
-            <Link to='/tasks'>
-              <Button text='Tasks' />
-            </Link>
-          </>
-        )}
+        
 
         <Link to='/initiatives'>
           <Button text='Initiatives' />
@@ -53,19 +45,18 @@ export default function Navigation({ user, setUser }) {
         {!user && (
           <>
             <Link to='/signin'>
-              <Button text='Signin' />
+              <Button text='SignIn' />
             </Link>
 
             <Link to='/signup'>
-              <Button text='Signup' />
+              <Button text='SignUp' />
             </Link>
           </>
         )}
         {user && (
           <>
-            <Link to='/signOut'>
-              <Button text='SignOut' />
-            </Link>
+            <span>{user.userName}</span>
+            <Button text='SignOut' onClick={signOutHandler} />{' '}
           </>
         )}
       </div>
