@@ -1,0 +1,16 @@
+.container {
+  display: flex;
+  width: 300px;
+  flex-direction: column;
+  gap: 20px;
+  border: 2px solid white;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 30px;
+}
+
+.container_in {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
