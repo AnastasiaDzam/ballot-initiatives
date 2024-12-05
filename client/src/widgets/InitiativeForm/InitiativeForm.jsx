@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import Button from '../../shared/ui/Button/Button';
-import { message as antMessage } from 'antd';
-import InitiativeApi from '../../entities/initiative/InitiativeApi';
+import { useState } from "react";
+import Button from "../../shared/ui/Button/Button";
+import { message as antMessage } from "antd";
+import InitiativeApi from "../../entities/initiative/InitiativeApi";
 
 export default function InitiativeForm({ setInitiatives, setLoading }) {
-  const [inputs, setInputs] = useState({ title: '', body: '' });
+  const [inputs, setInputs] = useState({ title: "", body: "" });
 
   function onChangeHandler(e) {
     setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -17,14 +17,13 @@ export default function InitiativeForm({ setInitiatives, setLoading }) {
 
   async function createInitiativeHandler() {
     if (isEmptyFormData) {
-      antMessage.error('Все поля обязательны к заполнению');
+      antMessage.error("Все поля обязательны к заполнению");
       return;
     }
     setLoading(true);
     try {
-      const { data, message, error, statusCode } = await InitiativeApi.createInitiative(
-        inputs
-      );
+      const { data, message, error, statusCode } =
+        await InitiativeApi.createInitiative(inputs);
       if (error) {
         antMessage.error(error);
         return;
@@ -33,7 +32,7 @@ export default function InitiativeForm({ setInitiatives, setLoading }) {
       antMessage.success(message);
       if (statusCode === 201) {
         setInitiatives((prev) => [...prev, data]);
-        setInputs({ title: '', body: '' });
+        setInputs({ title: "", body: "" });
       }
     } catch (error) {
       antMessage.error(error.message);
@@ -45,11 +44,11 @@ export default function InitiativeForm({ setInitiatives, setLoading }) {
 
   return (
     <div>
-      <input value={inputs.title} name='title' onChange={onChangeHandler} />
-      <input value={inputs.body} name='body' onChange={onChangeHandler} />
+      <input value={inputs.title} name="title" onChange={onChangeHandler} />
+      <input value={inputs.body} name="body" onChange={onChangeHandler} />
       <Button
-        text='Создать'
-        color='green'
+        text="Создать"
+        color="#1a1a68"
         onClick={createInitiativeHandler}
         disabled={isEmptyFormData}
       />
