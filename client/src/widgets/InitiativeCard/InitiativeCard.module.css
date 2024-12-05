@@ -8,3 +8,9 @@
   padding: 20px;
   margin: 30px;
 }
+
+.container_in {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}

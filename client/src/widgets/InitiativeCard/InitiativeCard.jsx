@@ -57,7 +57,7 @@ export default function InitiativeCard({ initiative, setInitiatives, user }) {
           />
           <Button
             text={showUpdateForm ? 'Скрыть' : 'Изменить'}
-            color='orange'
+            color='#1a1a68'
             onClick={() => setShowUpdateForm((prev) => !prev)}
           />
         </>
