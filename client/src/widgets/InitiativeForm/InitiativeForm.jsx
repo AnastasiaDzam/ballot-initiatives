@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import Button from '../../shared/ui/Button/Button';
 import { message as antMessage } from 'antd';
-import TaskApi from '../../entities/task/TaskApi';
+import InitiativeApi from '../../entities/initiative/InitiativeApi';
 
-export default function TaskForm({ setTasks, setLoading }) {
+export default function InitiativeForm({ setInitiatives, setLoading }) {
   const [inputs, setInputs] = useState({ title: '', body: '' });
 
   function onChangeHandler(e) {
@@ -15,25 +15,16 @@ export default function TaskForm({ setTasks, setLoading }) {
 
   console.log(isEmptyFormData);
 
-  async function createTaskHandler() {
+  async function createInitiativeHandler() {
     if (isEmptyFormData) {
       antMessage.error('Все поля обязательны к заполнению');
       return;
     }
     setLoading(true);
     try {
-      const { data, message, error, statusCode } = await TaskApi.createTask(
+      const { data, message, error, statusCode } = await InitiativeApi.createInitiative(
         inputs
       );
-      // const response = await fetch('/api/tasks', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-type': 'application/json',
-      //   },
-      //   body: JSON.stringify(inputs),
-      // });
-      // const { data, message, error, statusCode } = await response.json();
-
       if (error) {
         antMessage.error(error);
         return;
@@ -41,7 +32,7 @@ export default function TaskForm({ setTasks, setLoading }) {
       // console.log(data);
       antMessage.success(message);
       if (statusCode === 201) {
-        setTasks((prev) => [...prev, data]);
+        setInitiatives((prev) => [...prev, data]);
         setInputs({ title: '', body: '' });
       }
     } catch (error) {
@@ -59,7 +50,7 @@ export default function TaskForm({ setTasks, setLoading }) {
       <Button
         text='Создать'
         color='green'
-        onClick={createTaskHandler}
+        onClick={createInitiativeHandler}
         disabled={isEmptyFormData}
       />
     </div>

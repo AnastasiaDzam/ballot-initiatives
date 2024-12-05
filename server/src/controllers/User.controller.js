@@ -1,9 +1,5 @@
-//ЭТО КОНТРОЛЛЕР
-//Отвечает за GCAD операции с БД! 
-//Получить;
-//Получить по id;
-//Записать;
-//удалить;
+
+const bcrypt = require('bcrypt');
 
 const UserService = require('../services/User.service');
 const isValidId = require('../utils/isValidId');
@@ -11,125 +7,145 @@ const reformatId = require('../utils/reformatId');
 const UserValidator = require('../utils/User.validator');
 const formatResponse = require('../utils/formatResponse');
 
+class UserController {
 
-class UserController {  //пишем КОНТРОЛЛЕР;
-    //ОБРАБОТЧИК 1. GET 
-    static async getAllUsers (req, res) {  
-        try { //попробуй выполнить;
-            const users = await UserService.getAll(); //ГЛАВНЫЙ КОД, обращается к сервису, который return await Task.findAll(); 
-            if (users.length === 0) { //если НЕ СМОГЛИ получить users (===0, значит там пусто);
-                return res.status(204).json(formatResponse(204, 'No users found', [])); //не найдено, но ошибки нет;
-                //исп. утилиту formatResponse, чтобы выводить ошибку в одном виде;
-            }
-            return res.status(200).json(formatResponse(200, 'succeess', users)); // если СМОГЛИ получить task; 
-        } catch ({ message }) { //если ошибка на уровне try-catch;
-            console.error(message); //выводим ошибку в консоль;
-            res
-            .status(500) //выставляем статус у res
-            .json(formatResponse(500, 'Internal server error', null, message)); //исп. утилиту formatResponse, чтобы выводить ошибку в одном виде;
-        }
+  static async refreshTokens(req, res) {
+    try {
+      const { user } = res.locals;
+      const { accessToken, refreshToken } = generateTokens({ user });
+      res.status(200).cookie('refreshToken', refreshToken, cookiesConfig).json(
+        formatResponse(200, 'Successfully generated new tokens', {
+          user,
+          accessToken,
+        })
+      );
+    } catch ({ message }) {
+      console.error(message);
+      res
+        .status(500)
+        .json(formatResponse(500, 'Internal server error', null, message));
     }
+  }
 
-    //ОБРАБОТЧИК 2. GETBYID 
-    static async getUserByID(req, res) {
-        const { id } = req.params; //получаем id деструктуризацией из req.params;
-        if(!isValidId(id)) {  //если ошибка (id не валидный);
-            return res
-            .status(400)
-            .json(formatResponse(400, 'Invalid user Id')); //вернуть ошибку
-        }
-        try {
-            const users = await UserService.getById(reformatId(id));
-            if (!users) {
-                return res.status(404).json(formatResponse(404, `User with id ${id} not found`, []));
-            }
-            return res.status(200).json(formatResponse(200, 'succeess', users));
-        } catch ({ message }) {
-            console.error(message); //выводим ошибку в консоль;
-            res
-            .status(500) //выставляем статус у res
-            .json(formatResponse(500, 'Internal server error', null, message)); //исп. утилиту formatResponse, чтобы выводить ошибку в одном виде;
-        }
+  static async signUp(req, res) {
+    const { email, username, password } = req.body;
+    const { isValid, error } = UserValidator.validateSignUp({
+      email,
+      username,
+      password,
+    });
+    if (!isValid) {
+      return res
+        .status(400)
+        .json(formatResponse(400, 'Validation error', null, error));
     }
+    const normalizedEmail = email.toLowerCase();
 
-    //ОБРАБОТЧИК 3. CREATE 
-    static async createUser(req, res) {
-        const { userName, userLastName, email, password, registration } = req.body;    
-        const { isValid, error } = UserValidator.validate({ userName, userLastName, email, password, registration });
-
-        if (!isValid) {
-            return res
-            .status(400)
-            .json(formatResponse(400, 'Validation error', null, error));
-        }
-        try {
-            const newUser = await UserService.create({ userName, userLastName, email, password, registration });
-            if(!newUser) { //если НЕ СМОГЛИ получить данные;
-                return res
-                .status(400)
-                .json(formatResponse(400, `Failed to create new user`));
-            }
-            return res.status(201).json(formatResponse(201, 'succeess', newUser)); // СМОГЛИ получить
-        } catch ({ message }) {
-            console.error(message); //выводим ошибку в консоль;
-            res
-            .status(500) //выставляем статус у res
-            .json(formatResponse(500, 'Internal server error', null, message)); //исп. утилиту formatResponse, чтобы выводить ошибку в одном виде;
-        }
+    try {
+      const userFound = await UserService.getByEmail(normalizedEmail);
+      if (userFound) {
+        return res
+          .status(400)
+          .json(
+            formatResponse(
+              400,
+              'A user with this email already exists',
+              null,
+              'A user with this email already exists'
+            )
+          );
+      }
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const newUser = await UserService.create({
+        email: normalizedEmail,
+        username,
+        password: hashedPassword,
+      });
+      const plainUser = newUser.get({ plain: true });
+      delete plainUser.password;
+      const { accessToken, refreshToken } = generateTokens({ user: plainUser });
+      res
+        .status(201)
+        .cookie('refreshToken', refreshToken, cookiesConfig)
+        .json(
+          formatResponse(201, 'Login successful', {
+            user: plainUser,
+            accessToken,
+          })
+        );
+    } catch ({ message }) {
+      console.error(message);
+      res
+        .status(500)
+        .json(formatResponse(500, 'Internal server error', null, message));
     }
-
-    //ОБРАБОТЧИК 4. UPDATE
-    static async updateUser(req, res) {
-        // console.log(req.body)
-        const { userName, userLastName, email, password, registration } = req.body;
-        const { isValid, error } = UserValidator.validate({ userName, userLastName, email, password, registration });
-        // console.log(1111);
-        if (!isValid) {
-            return res
-            .status(400)
-            .json(formatResponse(400, 'Validation error', null, error));
-        }
-        
-        
-        try {
-            const updateUser = await UserService.update(reformatId(req.params.id), { userName, userLastName, email, password, registration });
-            if(!updateUser) { //не успешно;
-                return res
-                .status(400)
-                .json(formatResponse(400, `Failed to update user with id ${id}`)); //дали ошибку
-            }
-            return res.status(200).json(formatResponse(200, 'succeess', updateUser)); // успешно; дали 200 и результат updateTask;
-        } catch ({ message }) {  //если ошибка на уровне try-catch;
-            console.error(message); //выводим ошибку в консоль;
-            res
-            .status(500) //выставляем статус у res
-            .json(formatResponse(500, 'Internal server error', null, message)); //исп. утилиту formatResponse, чтобы выводить ошибку в одном виде;
-        }
+  }
+  static async signIn(req, res) {
+    const { email, password } = req.body;
+    const { isValid, error } = UserValidator.validateSignIn({
+      email,
+      password,
+    });
+    if (!isValid) {
+      return res
+        .status(400)
+        .json(formatResponse(400, 'Validation error', null, error));
     }
+    const normalizedEmail = email.toLowerCase();
 
+    try {
+      const user = await UserService.getByEmail(normalizedEmail);
+      if (!user) {
+        return res
+          .status(404)
+          .json(
+            formatResponse(
+              404,
+              'User with this email not found',
+              null,
+              'User with this email not found'
+            )
+          );
+      }
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+      if (!isPasswordValid) {
+        return res
+          .status(401)
+          .json(
+            formatResponse(401, 'Invalid password.', null, 'Invalid password.')
+          );
+      }
+      const plainUser = user.get({ plain: true });
+      delete plainUser.password;
+      const { accessToken, refreshToken } = generateTokens({ user: plainUser });
+      res
+        .status(200)
+        .cookie('refreshToken', refreshToken, cookiesConfig)
+        .json(
+          formatResponse(200, 'Login successful', {
+            user: plainUser,
+            accessToken,
+          })
+        );
+    } catch ({ message }) {
+      console.error(message);
+      res
+        .status(500)
+        .json(formatResponse(500, 'Internal server error', null, message));
+    }
+  }
+  static async signOut(req, res) {
+    console.log(req.cookies);
+    try {
+      res
+        .clearCookie('refreshToken')
+        .json(formatResponse(200, 'Logout successful'));
+    } catch ({ message }) {
+      console.error(message);
+      res
+        .status(500)
+        .json(formatResponse(500, 'Internal server error', null, message));
 
-    //ОБРАБОТЧИК 5. DELETE
-    static async deleteUser(req, res) {
-        const { id } = req.params; //получили id;
-        if (!isValidId(id)) {
-            return res
-            .status(400)
-            .json(formatResponse(400, 'Invalid user Id'))
-        }
-        try {
-            const deleteUser = await UserService.delete(id);
-            if (!deleteUser) {
-                return res
-                .status(400)
-                .json(formatResponse(400, `Failed to delete user with id ${id}`))
-            }
-            return res.status(200).json(formatResponse(200, 'succeess', deleteUser));
-        } catch ({ message }) {  //если ошибка на уровне try-catch;
-            console.error(message); //выводим ошибку в консоль;
-            res
-            .status(500) //выставляем статус у res
-            .json(formatResponse(500, 'Internal server error', null, message)); //исп. утилиту formatResponse, чтобы выводить ошибку в одном виде;
-        }
     }
 }
 
