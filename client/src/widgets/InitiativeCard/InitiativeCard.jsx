@@ -10,17 +10,16 @@ export default function InitiativeCard({ initiative, setInitiatives, user }) {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [showUpdateForm, setShowUpdateForm] = useState(false);
-  console.log(user.id)
   async function deleteInitiativeHandler(title) {
-    if (user.id !== initiative.user_id) {
-      antMessage.error(`No rights to delete initiative with id ${initiative.id}`);
+    if (user.id !== initiative?.user_id) {
+      antMessage.error(`No rights to delete initiative? with id ${initiative?.id}`);
       return;
     }
     setLoading(true);
     try {
       const { data, message, error, statusCode } = await InitiativeApi.deleteInitiativeById(
 
-        initiative.id
+        initiative?.id
       );
 
       if (error) {
@@ -41,20 +40,20 @@ export default function InitiativeCard({ initiative, setInitiatives, user }) {
   }
 
   function redirectButtonHandler() {
-    navigate(`/initiatives/${initiative.id}`);
+    navigate(`/initiatives/${initiative?.id}`);
   }
 
   return (
-    <div className={styles.container} key={initiative.title}>
-      <span>{initiative.title}</span>
-      <span>{initiative.content}</span>
+    <div className={styles.container} key={initiative?.title}>
+      <span>{initiative?.title}</span>
+      <span>{initiative?.content}</span>
       <Button text='Подробнее' color='blue' onClick={redirectButtonHandler} />
-      {user.id === initiative.user_id && (
+      {user?.id === initiative?.user_id && (
         <>
           <Button
             text='Удалить'
             color='red'
-            onClick={() => deleteInitiativeHandler(initiative.title)}
+            onClick={() => deleteInitiativeHandler(initiative?.title)}
           />
           <Button
             text={showUpdateForm ? 'Скрыть' : 'Изменить'}
@@ -63,7 +62,7 @@ export default function InitiativeCard({ initiative, setInitiatives, user }) {
           />
         </>
       )}
-      {showUpdateForm && user.id === initiative.user_id && (
+      {showUpdateForm && user?.id === initiative?.user_id && (
         <InitiativeUpdateForm
           user={user}
           initiative={initiative}
