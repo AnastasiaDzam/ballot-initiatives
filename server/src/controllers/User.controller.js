@@ -1,11 +1,9 @@
-
 const bcrypt = require('bcrypt');
-
 const UserService = require('../services/User.service');
-const isValidId = require('../utils/isValidId');
-const reformatId = require('../utils/reformatId');
-const UserValidator = require('../utils/User.validator');
 const formatResponse = require('../utils/formatResponse');
+const UserValidator = require('../utils/User.validator');
+const cookiesConfig = require('../config/cookiesConfig');
+const generateTokens = require('../utils/generateTokens');
 
 class UserController {
 
@@ -145,9 +143,8 @@ class UserController {
       res
         .status(500)
         .json(formatResponse(500, 'Internal server error', null, message));
-
     }
-}
+  }
 }
 
 module.exports = UserController;
