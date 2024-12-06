@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 function VotesPage({ initiatives, setInitiatives, user }) {
   return (
     <div className="favorite">
-      <h1 className="favorite__title">Любимчики</h1>
+      <h1 className="favorite__title">Ваши голоса</h1>
       {user ? (
         <div className="initiatives-page-card-container">
           {initiatives &&

@@ -1,33 +1,32 @@
+const { Vote } = require("../db/models");
 
-const { Vote } = require('../db/models')
-
-class VoteServices {
-
-  static getOneVote = async (user_id, initiative_id) => {
-    const voteInDb = await Vote.findOne({ where: { user_id, initiative_id } })
-    return voteInDb ? true : false
-  }
-  static createVote = async ({ user_id, initiative_id }) => {
-
-    const voteIn = await this.getOneVote(user_id, initiative_id);
-    if (voteIn) {
-      return 'vote already';
-    }
-    const vote = await Vote.create({ user_id, initiative_id });
-    return vote.get();
-  };
-
-  static deleteVote= async (user_id, initiative_id)=>{
-    const voteIn = await this.getOneVote(user_id, initiative_id);
-    if (voteIn) {
-     await Vote.destroy({where : { user_id, initiative_id }});
-    return 'vote delete' ;
-    }
-    
-    return 'vote no';
-
+class VoteService {
+  static async getById(id) {
+    return await Vote.findByPk(id);
   }
 
+  static async getByInitiativeId(initiative_id, user_id) {
+    return await Vote.findOne({ where: { initiative_id, user_id } });
+  }
+
+  static async getAllVote(user_id) {
+    return await Vote.findAll({
+      where: { user_id },
+    });
+  }
+  static async createVote(user_id, initiative_id) { // 
+    const newVote = await Vote.create({ user_id, initiative_id});
+    console.log(newVote)
+    return newVote;
+  }
+  
+  static async deleteVote(initiative_id, user_id) {
+    const deleteVoteCount = await this.getByInitiativeId(initiative_id, user_id);
+    if (deleteVoteCount) {
+      await deleteVoteCount.destroy();
+    }
+    return deleteVoteCount;
+  }
 }
 
-module.exports = VoteServices;
+module.exports = VoteService;
