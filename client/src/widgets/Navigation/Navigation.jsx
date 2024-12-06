@@ -52,6 +52,13 @@ export default function Navigation({ user, setUser }) {
         )}
         {user && (
           <>
+            <Link to='/votes'>
+              <Button text='Voutes' />
+            </Link>
+          </>
+        )}
+        {user && (
+          <>
             <span>{user.userName}</span>
             <Button text='SignOut' onClick={signOutHandler} />{' '}
           </>
