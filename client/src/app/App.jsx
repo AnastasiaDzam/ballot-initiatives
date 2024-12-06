@@ -40,9 +40,7 @@ function App() {
         { path: "/", element: <MainPage /> },
         { path: "/signin", element: <SignInPage setUser={setUser} /> },
         { path: "/signup", element: <SignUpPage setUser={setUser} /> },
-<<<<<<< HEAD
-        { path: "/initiatives", element: <InitiativesPage user={user} /> },
-=======
+
         {
           path: "/votes",
           element: <VotesPage user={user}/>,
@@ -51,7 +49,6 @@ function App() {
           path: "/initiatives",
           element: <InitiativesPage user={user}/>,
         },
->>>>>>> c515e38e950fb8a3b514a727d898259e88945556
         { path: "/initiatives/:id", element: <OneInitiativePage /> },
         // { path: "/user", element: <UserPage /> },
       ],

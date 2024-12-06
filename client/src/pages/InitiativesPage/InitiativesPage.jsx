@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { useEffect, useState } from 'react';
 import InitiativesList from '../../widgets/InitiativesList/InitiativesList';
 import InitiativeForm from '../../widgets/InitiativeForm/InitiativeForm';
@@ -35,7 +34,6 @@ export default function InitiativesPage({ user }) {
     loadInitiatives();
   }, []);
 
-  console.log("page22",initiatives);
   
 
   return (
