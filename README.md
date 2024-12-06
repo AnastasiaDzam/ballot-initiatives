@@ -1,2 +1,0 @@
-# ballot-initiatives
- # ballot-initiatives
