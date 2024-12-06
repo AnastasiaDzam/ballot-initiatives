@@ -1,36 +1,20 @@
-<<<<<<< HEAD
-/* eslint-disable react/prop-types */
 import styles from "./InitiativeCard.module.css";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Button from "../../shared/ui/Button/Button";
 import { message as antMessage } from "antd";
 import InitiativeApi from "../../entities/initiative/InitiativeApi";
-import UserApi from "../../entities/user/UserApi";
 import InitiativeUpdateForm from "../InitiativeUpdateForm/InitiativeUpdateForm";
 import { useNavigate } from "react-router-dom";
-=======
-import styles from './InitiativeCard.module.css';
-import React, { useState } from 'react';
-import Button from '../../shared/ui/Button/Button';
-import { message as antMessage } from 'antd';
-import InitiativeApi from '../../entities/initiative/InitiativeApi';
-import InitiativeUpdateForm from '../InitiativeUpdateForm/InitiativeUpdateForm';
-import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
->>>>>>> c515e38e950fb8a3b514a727d898259e88945556
+import { useEffect } from "react";
 
 export default function InitiativeCard({ initiative, setInitiatives, user }) {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [showUpdateForm, setShowUpdateForm] = useState(false);
-<<<<<<< HEAD
 
-  async function deleteInitiativeHandler() {
-=======
   const [isVote, setIsVote] = useState(false);
 
   async function deleteInitiativeHandler(title) {
->>>>>>> c515e38e950fb8a3b514a727d898259e88945556
     if (user.id !== initiative?.user_id) {
       antMessage.error(
         `У вас нет прав на удаление инициативы с id ${initiative?.id}`
@@ -81,38 +65,28 @@ export default function InitiativeCard({ initiative, setInitiatives, user }) {
     navigate(`/initiative/${initiative.id}`);
   };
 
-useEffect(()=> {
-  InitiativeApi.getVoteByInitiativeId(initiative.id)
-  .then (({statusCode})=> {
-    if (statusCode === 200){
-      setIsVote(true)
-    }
-  })
-},[])
-
+  useEffect(() => {
+    InitiativeApi.getVoteByInitiativeId(initiative.id).then(
+      ({ statusCode }) => {
+        if (statusCode === 200) {
+          setIsVote(true);
+        }
+      }
+    );
+  }, []);
 
   return (
     <div className={styles.container} key={initiative?.id}>
       <span>{initiative?.title}</span>
-<<<<<<< HEAD
-      {/* <span>{initiative?.content}</span> */}
-      <span>{initiative?.level}</span>
-      <Button text="Подробнее" color="blue" onClick={redirectButtonHandler} />
 
-      {user && user.id === initiative?.user_id && (
-=======
       <span>{initiative?.content}</span>
-      <Button text='Подробнее' color='blue' onClick={redirectButtonHandler} />
+      <Button text="Подробнее" color="blue" onClick={redirectButtonHandler} />
       <div>
-      <a onClick={handleClick}>
-      </a>
-      <button onClick={handleToggleVote}>{isVote ? "✔️" : "➕"}</button>
-    </div>
-
-
+        <a onClick={handleClick}></a>
+        <button onClick={handleToggleVote}>{isVote ? "✔️" : "➕"}</button>
+      </div>
 
       {user?.id === initiative?.user_id && (
->>>>>>> c515e38e950fb8a3b514a727d898259e88945556
         <>
           <Button
             text="Удалить"
@@ -140,4 +114,3 @@ useEffect(()=> {
     </div>
   );
 }
-
