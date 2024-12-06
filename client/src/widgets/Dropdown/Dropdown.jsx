@@ -14,7 +14,7 @@ function Dropdown({setViewInit, viewInit, initiatives}) {
 
     return (
         <div>
-            <div className="input-group mb-3" style={{display: 'flex', padding: '34px', justifyContent : 'space-between' }}>
+            <div className="input-group mb-3" style={{cursor:"pointer",display: 'flex', padding: '34px', justifyContent : 'space-between' }}>
             <a className="dropdown-item" onClick={() => changeCurrentDistrictHandler("")}>Все</a>
             <a className="dropdown-item" onClick={() => changeCurrentDistrictHandler('Федеральный')}>Федеральные</a>
             <a className="dropdown-item" onClick={() => changeCurrentDistrictHandler('Региональный')}>Региональные</a>
