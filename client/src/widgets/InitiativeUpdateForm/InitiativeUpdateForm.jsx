@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import Button from '../../shared/ui/Button/Button';
-import { message as antMessage } from 'antd';
-import InitiativeApi from '../../entities/initiative/InitiativeApi';
+import React, { useState } from "react";
+import Button from "../../shared/ui/Button/Button";
+import { message as antMessage } from "antd";
+import InitiativeApi from "../../entities/initiative/InitiativeApi";
 
 export default function InitiativeUpdateForm({
   user,
@@ -10,10 +10,16 @@ export default function InitiativeUpdateForm({
   setLoading,
   setShowUpdateForm,
 }) {
-  const [inputs, setInputs] = useState({ title: initiative?.title, body: initiative?.body });
+  const [inputs, setInputs] = useState({
+    title: initiative?.title,
+    content: initiative?.content,
+    level: initiative?.level,
+  });
 
   const isEmptyFormData =
-    inputs.title.trim().length === 0 || inputs.body.trim().length === 0;
+    inputs.title.trim().length === 0 ||
+    inputs.content.trim().length === 0 ||
+    inputs.level.trim().length === 0;
 
   function changeInputsHandler({ target }) {
     const { value, name } = target;
@@ -21,28 +27,30 @@ export default function InitiativeUpdateForm({
   }
 
   async function sendUpdatedInitiative() {
-    if (user.id !== initiative?.userId) {
-      antMessage.error(`No rights to update initiative with id ${initiative?.id}`);
+    if (user.id !== initiative?.user_id) {
+      antMessage.error(
+        `No rights to update initiative with id ${initiative?.id}`
+      );
       return;
     }
     if (isEmptyFormData) {
-      antMessage.error('Все поля обязательны к заполнению');
+      antMessage.error("Все поля обязательны к заполнению");
       return;
     }
     setLoading(true);
     try {
-      const { data, message, error, statusCode } = await InitiativeApi.updateInitiativeById(
-        initiative.id,
-        inputs
-      );
+      const { data, message, error, statusCode } =
+        await InitiativeApi.updateInitiativeById(initiative.id, inputs);
       if (error) {
         antMessage.error(error);
         return;
       }
       antMessage.success(message);
       if (statusCode === 200) {
-        setInitiatives((prev) => prev.map((el) => (el.id === data.id ? data : el)));
-        setInputs({ title: '', body: '' });
+        setInitiatives((prev) =>
+          prev.map((el) => (el.id === data.id ? data : el))
+        );
+        setInputs({ title: "", content: "", level: "" });
         setShowUpdateForm(false);
       }
     } catch (error) {
@@ -56,18 +64,24 @@ export default function InitiativeUpdateForm({
   return (
     <div>
       <input
-        name='title'
+        name="title"
         value={inputs.title}
-        placeholder='title'
+        placeholder="title"
         onChange={changeInputsHandler}
       />
       <input
-        name='body'
-        value={inputs.body}
-        placeholder='body'
+        name="content"
+        value={inputs.content}
+        placeholder="content"
         onChange={changeInputsHandler}
       />
-      <Button text='Сохранить' onClick={sendUpdatedInitiative} />
+      <input
+        name="level"
+        value={inputs.level}
+        placeholder="level"
+        onChange={changeInputsHandler}
+      />
+      <Button text="Сохранить" onClick={sendUpdatedInitiative} />
     </div>
   );
 }

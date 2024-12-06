@@ -1,21 +1,22 @@
+import styles from "./InitiativeForm.module.css";
 import { useState } from "react";
 import Button from "../../shared/ui/Button/Button";
 import { message as antMessage } from "antd";
 import InitiativeApi from "../../entities/initiative/InitiativeApi";
 
 export default function InitiativeForm({ setInitiatives, setLoading }) {
-  const [inputs, setInputs] = useState({ title: "", body: "" });
+  const [inputs, setInputs] = useState({ title: "", content: "", level: "" });
 
   function onChangeHandler(e) {
     setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   }
 
   const isEmptyFormData =
-    inputs.title.trim().length === 0 || inputs.body.trim().length === 0;
+    inputs.title.trim().length === 0 ||
+    inputs.content.trim().length === 0 ||
+    inputs.level.trim().length === 0;
 
-  console.log(isEmptyFormData);
-
-  async function createInitiativeHandler() {
+  async function createInitiativeHandler() {    
     if (isEmptyFormData) {
       antMessage.error("Все поля обязательны к заполнению");
       return;
@@ -28,11 +29,10 @@ export default function InitiativeForm({ setInitiatives, setLoading }) {
         antMessage.error(error);
         return;
       }
-      // console.log(data);
       antMessage.success(message);
       if (statusCode === 201) {
         setInitiatives((prev) => [...prev, data]);
-        setInputs({ title: "", body: "" });
+        setInputs({ title: "", content: "", level: "" });
       }
     } catch (error) {
       antMessage.error(error.message);
@@ -47,6 +47,12 @@ export default function InitiativeForm({ setInitiatives, setLoading }) {
       <div>Создать</div>
       <input value={inputs.title} name="title" onChange={onChangeHandler} />
       <input value={inputs.body} name="body" onChange={onChangeHandler} />
+
+    <div>
+      <input className={styles.input} value={inputs.title} name="title" placeholder="Заголовок" onChange={onChangeHandler} />
+      <input className={styles.input} value={inputs.content} name="content" placeholder="Содержание" onChange={onChangeHandler} />
+      <input className={styles.input} value={inputs.level} name="level" placeholder="Округ" onChange={onChangeHandler} />
+
       <Button
         text="Создать"
         color="#1a1a68"

@@ -7,6 +7,9 @@ export default function OneInitiativePage() {
   const { id } = useParams();
   const [initiative, setInitiative] = useState(null);
   const [loading, setLoading] = useState(true);
+  
+  console.log("OnePage11", initiative);
+  
 
   const myStyle = {
     display: 'flex',
@@ -47,10 +50,13 @@ export default function OneInitiativePage() {
   return (
     <div>
       {loading && <h3>Загрузка...</h3>}
+
       <div style={myStyle}><h2>{initiative && <div>{initiative.title}</div>}</h2></div>
       <div style={my2Style}>Уровень инициативы:
       {initiative && <div>{initiative.level}</div>}</div>
       <div style={my2Style}>{initiative && <div>{initiative.content}</div>}</div>
+
+      {initiative && <div>{initiative.content}</div>}
     </div>
   );
 }

@@ -1,19 +1,25 @@
-const { Initiative } = require("../db/models");
+const { Initiative, User } = require("../db/models");
 
 class InitiativeService {
   //* Получить все задачи
   static async getAll() {
-    return await Initiative.findAll();
+    return await Initiative.findAll({
+      include: [{ model: User }],
+    });
   }
 
   //* Найти задачу по ID
   static async getById(id) {
-    return await Initiative.findByPk(id);
+    return await Initiative.findOne({
+      where: { id },
+      include: [{ model: User }],
+    });
   }
 
   //* Создать новую задачу
   static async create(data) {
-    return await Initiative.create(data);
+    const newInitiative = await Initiative.create(data);
+    return await this.getById(newInitiative.id);
   }
 
   //* Обновить задачу по ID
@@ -23,7 +29,7 @@ class InitiativeService {
       initiative.title = data.title;
       initiative.content = data.content;
       initiative.level = data.level;
-      initiative.user_id = data.user_id;
+      // initiative.user_id = data.user_id;
       await initiative.save();
     }
     return initiative; //* Возвращаем обновлённый объект или null

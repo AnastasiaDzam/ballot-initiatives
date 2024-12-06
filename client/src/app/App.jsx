@@ -9,9 +9,11 @@ import SignUpPage from "../pages/SignUpPage/SignUpPage.jsx";
 import { useEffect, useState } from "react";
 import UserApi from "../entities/user/UserApi.js";
 import { setAccessToken } from "../shared/lib/axiosInstance.js";
+import VotesPage from "../pages/VoutesPage/VoutesPage.jsx";
 
 function App() {
   const [user, setUser] = useState(null);
+  // const [vote, setVote] = useState(null);
   useEffect(() => {
     UserApi.refreshTokens()
       .then(({ error, data, statusCode }) => {
@@ -38,6 +40,11 @@ function App() {
         { path: "/", element: <MainPage /> },
         { path: "/signin", element: <SignInPage setUser={setUser} /> },
         { path: "/signup", element: <SignUpPage setUser={setUser} /> },
+
+        {
+          path: "/votes",
+          element: <VotesPage user={user}/>,
+        },
         {
           path: "/initiatives",
           element: <InitiativesPage user={user}/>,
