@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import UserApi from "../entities/user/UserApi.js";
 import { setAccessToken } from "../shared/lib/axiosInstance.js";
 import VotesPage from "../pages/VoutesPage/VoutesPage.jsx";
+import NotFound from "../pages/notFound/notFound.jsx"
 
 function App() {
   const [user, setUser] = useState(null);
@@ -50,6 +51,7 @@ function App() {
           element: <InitiativesPage user={user}/>,
         },
         { path: "/initiatives/:id", element: <OneInitiativePage /> },
+        { path: "*", element: <NotFound /> },
         // { path: "/user", element: <UserPage /> },
       ],
     },
