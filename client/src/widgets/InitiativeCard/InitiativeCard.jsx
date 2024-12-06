@@ -5,11 +5,14 @@ import { message as antMessage } from 'antd';
 import InitiativeApi from '../../entities/initiative/InitiativeApi';
 import InitiativeUpdateForm from '../InitiativeUpdateForm/InitiativeUpdateForm';
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 export default function InitiativeCard({ initiative, setInitiatives, user }) {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [showUpdateForm, setShowUpdateForm] = useState(false);
+  const [isVote, setIsVote] = useState(false);
+
   async function deleteInitiativeHandler(title) {
     if (user.id !== initiative?.user_id) {
       antMessage.error(`No rights to delete initiative? with id ${initiative?.id}`);
@@ -43,11 +46,46 @@ export default function InitiativeCard({ initiative, setInitiatives, user }) {
     navigate(`/initiatives/${initiative?.id}`);
   }
 
+  const handleToggleVote = async () => {
+    try {
+      if (isVote) {
+        await InitiativeApi.deleteFromVote(initiative.id);
+      } else {
+        await InitiativeApi.addToVote(initiative.id);
+      }
+      setIsVote((prev) => !prev);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleClick = () => {
+    navigate(`/initiative/${initiative.id}`);
+  };
+
+useEffect(()=> {
+  InitiativeApi.getVoteByInitiativeId(initiative.id)
+  .then (({statusCode})=> {
+    if (statusCode === 200){
+      setIsVote(true)
+    }
+  })
+},[])
+
+
   return (
     <div className={styles.container} key={initiative?.title}>
       <span>{initiative?.title}</span>
       <span>{initiative?.content}</span>
       <Button text='Подробнее' color='blue' onClick={redirectButtonHandler} />
+      <div>
+      <a onClick={handleClick}>
+      </a>
+      <button onClick={handleToggleVote}>{isVote ? "✔️" : "➕"}</button>
+    </div>
+
+
+
       {user?.id === initiative?.user_id && (
         <>
           <Button
@@ -62,6 +100,7 @@ export default function InitiativeCard({ initiative, setInitiatives, user }) {
           />
         </>
       )}
+
       {showUpdateForm && user?.id === initiative?.user_id && (
         <InitiativeUpdateForm
           user={user}
@@ -74,3 +113,4 @@ export default function InitiativeCard({ initiative, setInitiatives, user }) {
     </div>
   );
 }
+

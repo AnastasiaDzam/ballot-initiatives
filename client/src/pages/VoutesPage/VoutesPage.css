@@ -1,0 +1,10 @@
+.favorite {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .favorite__title {
+    text-align: center;
+  }
+  

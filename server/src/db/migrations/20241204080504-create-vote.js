@@ -2,24 +2,30 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Initiatives", {
+    await queryInterface.createTable("Votes", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      title: {
-        type: Sequelize.STRING,
-      },
-      content: {
-        type: Sequelize.STRING,
-      },
-      level: {
-        type: Sequelize.STRING,
-      },
       user_id: {
+        allowNull: false,
         type: Sequelize.INTEGER,
+        references: {
+          key: "id",
+          model: "Users",
+        },
+        onDelete: "cascade",
+      },
+      initiative_id: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          key: "id",
+          model: "Initiatives",
+        },
+        onDelete: "cascade",
       },
       createdAt: {
         allowNull: false,
@@ -34,6 +40,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Initiatives");
+    await queryInterface.dropTable("Votes");
   },
 };
