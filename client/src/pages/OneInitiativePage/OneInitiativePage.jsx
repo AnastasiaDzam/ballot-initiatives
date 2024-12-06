@@ -11,6 +11,20 @@ export default function OneInitiativePage() {
   console.log("OnePage11", initiative);
   
 
+  const myStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+    padding: '14px',
+    // color: 'blue',
+    // backgroundColor: 'lightgray',
+  };
+
+  const my2Style = {
+    display: 'flex',
+    flexDirection: 'column',
+    padding: '14px',
+  };
+
   useEffect(() => {
     InitiativeApi.getInitiativeById(+id)
       .then(({ statusCode, data, error, message }) => {
@@ -36,6 +50,12 @@ export default function OneInitiativePage() {
   return (
     <div>
       {loading && <h3>Загрузка...</h3>}
+
+      <div style={myStyle}><h2>{initiative && <div>{initiative.title}</div>}</h2></div>
+      <div style={my2Style}>Уровень инициативы:
+      {initiative && <div>{initiative.level}</div>}</div>
+      <div style={my2Style}>{initiative && <div>{initiative.content}</div>}</div>
+
       {initiative && <div>{initiative.content}</div>}
     </div>
   );

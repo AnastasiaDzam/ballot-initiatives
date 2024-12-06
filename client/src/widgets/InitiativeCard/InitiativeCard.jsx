@@ -12,8 +12,8 @@ export default function InitiativeCard({ initiative, setInitiatives, user }) {
   const [loading, setLoading] = useState(false);
   const [showUpdateForm, setShowUpdateForm] = useState(false);
 
-  const [isVote, setIsVote] = useState(false);
 
+  const [isVote, setIsVote] = useState(false);
   async function deleteInitiativeHandler(title) {
     if (user.id !== initiative?.user_id) {
       antMessage.error(
