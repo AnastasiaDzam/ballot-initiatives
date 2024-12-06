@@ -20,7 +20,7 @@ module.exports = {
           userLastName: "Сергеев",
           email: "sergeev2@mail.ru",
           password: 123,
-          registration: 'Федеральный округ',
+          registration: "Федеральный округ",
           createdAt: new Date(),
           updatedAt: new Date(),
         },

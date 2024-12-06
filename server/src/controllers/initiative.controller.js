@@ -13,6 +13,7 @@ class InitiativeController {
           .status(204)
           .json(formatResponse(204, "No initiative found", []));
       }
+      
       res.status(200).json(formatResponse(200, "success", initiative));
     } catch ({ message }) {
       console.error(message);
@@ -23,7 +24,7 @@ class InitiativeController {
   }
 
   static async getInitiativeById(req, res) {
-    const { id } = req.params; // req.params - объект параметров у адресной строки 
+    const { id } = req.params; // req.params - объект параметров у адресной строки
 
     //! Проверка на валидность ID (обработка негативного кейса)
     if (!isValidId(id)) {
@@ -52,14 +53,15 @@ class InitiativeController {
   }
 
   static async createInitiative(req, res) {
-    const { title, content, level, user_id } = req.body;
-
+    const { title, content, level } = req.body;
+    const { id } = res.locals.user;
+    
     //! Проверка наличия необходимых данных - Используем InitiativeValidator (обработка негативного кейса)
     const { isValid, error } = InitiativeValidator.validate({
       title,
       content,
       level,
-      user_id,
+      user_id: id,
     });
     if (!isValid) {
       return res
@@ -73,7 +75,7 @@ class InitiativeController {
         title,
         content,
         level,
-        user_id,
+        user_id: id,
       });
 
       //! Проверка на существование новой задачи (обработка негативного кейса)
@@ -165,7 +167,7 @@ class InitiativeController {
       res
         .status(200)
         .json(
-          formatResponse(200, `Initiative with id ${id} successfully deleted`)
+          formatResponse(200, `Initiative with id ${id} successfully deleted`, deletedInitiative)
         );
     } catch ({ message }) {
       console.error(message);

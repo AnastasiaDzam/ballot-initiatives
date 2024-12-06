@@ -3,7 +3,11 @@ import { axiosInstance } from "../../shared/lib/axiosInstance";
 class InitiativeApi {
   static async getInitiatives() {
     try {
+<<<<<<< HEAD
+      const { data } = await axiosInstance.get("/initiative");      
+=======
       const { data } = await axiosInstance.get("/initiative");
+>>>>>>> c515e38e950fb8a3b514a727d898259e88945556
       return data;
     } catch (error) {
       return error.response.data;
@@ -21,6 +25,10 @@ class InitiativeApi {
 
   static async getVoteByInitiativeId(id){
     try {
+<<<<<<< HEAD
+      const { data } = await axiosInstance.post("/initiative", newInitiative);
+
+=======
       const { data } = await axiosInstance.get(`/vote/${id}`);
       return data;
     } catch (error) {
@@ -42,6 +50,7 @@ class InitiativeApi {
         initiative_id,
       });
        console.log(data,222222);
+>>>>>>> c515e38e950fb8a3b514a727d898259e88945556
       return data;
     } catch (error) {
       return error.response.data;
@@ -63,8 +72,16 @@ class InitiativeApi {
 
   static async getAllVotes() {
     try {
+<<<<<<< HEAD
+      const { data } = await axiosInstance.put(
+        `/initiative/${id}`,
+        updatedInitiative
+      );
+      return data;
+=======
       const { data } = await axiosInstance.get("/vote"); 
       return data; 
+>>>>>>> c515e38e950fb8a3b514a727d898259e88945556
     } catch (error) {
       console.error(error);
       return error.response.data;

@@ -7,6 +7,9 @@ export default function OneInitiativePage() {
   const { id } = useParams();
   const [initiative, setInitiative] = useState(null);
   const [loading, setLoading] = useState(true);
+  
+  console.log("OnePage11", initiative);
+  
 
   useEffect(() => {
     InitiativeApi.getInitiativeById(+id)
@@ -33,7 +36,7 @@ export default function OneInitiativePage() {
   return (
     <div>
       {loading && <h3>Загрузка...</h3>}
-      {initiative && <div>{initiative.title}</div>}
+      {initiative && <div>{initiative.content}</div>}
     </div>
   );
 }

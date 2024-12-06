@@ -1,3 +1,14 @@
+<<<<<<< HEAD
+/* eslint-disable react/prop-types */
+import styles from "./InitiativeCard.module.css";
+import React, { useEffect, useState } from "react";
+import Button from "../../shared/ui/Button/Button";
+import { message as antMessage } from "antd";
+import InitiativeApi from "../../entities/initiative/InitiativeApi";
+import UserApi from "../../entities/user/UserApi";
+import InitiativeUpdateForm from "../InitiativeUpdateForm/InitiativeUpdateForm";
+import { useNavigate } from "react-router-dom";
+=======
 import styles from './InitiativeCard.module.css';
 import React, { useState } from 'react';
 import Button from '../../shared/ui/Button/Button';
@@ -6,44 +17,51 @@ import InitiativeApi from '../../entities/initiative/InitiativeApi';
 import InitiativeUpdateForm from '../InitiativeUpdateForm/InitiativeUpdateForm';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
+>>>>>>> c515e38e950fb8a3b514a727d898259e88945556
 
 export default function InitiativeCard({ initiative, setInitiatives, user }) {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [showUpdateForm, setShowUpdateForm] = useState(false);
+<<<<<<< HEAD
+
+  async function deleteInitiativeHandler() {
+=======
   const [isVote, setIsVote] = useState(false);
 
   async function deleteInitiativeHandler(title) {
+>>>>>>> c515e38e950fb8a3b514a727d898259e88945556
     if (user.id !== initiative?.user_id) {
-      antMessage.error(`No rights to delete initiative? with id ${initiative?.id}`);
+      antMessage.error(
+        `У вас нет прав на удаление инициативы с id ${initiative?.id}`
+      );
       return;
     }
     setLoading(true);
     try {
-      const { data, message, error, statusCode } = await InitiativeApi.deleteInitiativeById(
-
-        initiative?.id
-      );
+      const { data, message, error, statusCode } =
+        await InitiativeApi.deleteInitiativeById(initiative?.id);
 
       if (error) {
         antMessage.error(error);
         return;
       }
       if (statusCode === 200) {
-        setInitiatives((prev) => [...prev].filter((el) => el.id !== data.id));
+        setInitiatives((prev) => [...prev].filter((el) => el.id !== data?.id));
         antMessage.success(message);
       }
-    } catch (error) {
-      antMessage.error(error.message);
-      console.log(error);
+    } catch (err) {
+      antMessage.error(err.message);
+      console.error(err);
     } finally {
-      antMessage.info('Загрузка завершена');
+      antMessage.info("Загрузка завершена");
       setLoading(false);
     }
   }
 
   function redirectButtonHandler() {
-    navigate(`/initiatives/${initiative?.id}`);
+    navigate(`/initiatives/${initiative?.content}/`);
+    // antMessage.success(initiative.content)
   }
 
   const handleToggleVote = async () => {
@@ -74,8 +92,15 @@ useEffect(()=> {
 
 
   return (
-    <div className={styles.container} key={initiative?.title}>
+    <div className={styles.container} key={initiative?.id}>
       <span>{initiative?.title}</span>
+<<<<<<< HEAD
+      {/* <span>{initiative?.content}</span> */}
+      <span>{initiative?.level}</span>
+      <Button text="Подробнее" color="blue" onClick={redirectButtonHandler} />
+
+      {user && user.id === initiative?.user_id && (
+=======
       <span>{initiative?.content}</span>
       <Button text='Подробнее' color='blue' onClick={redirectButtonHandler} />
       <div>
@@ -87,15 +112,17 @@ useEffect(()=> {
 
 
       {user?.id === initiative?.user_id && (
+>>>>>>> c515e38e950fb8a3b514a727d898259e88945556
         <>
           <Button
-            text='Удалить'
-            color='red'
-            onClick={() => deleteInitiativeHandler(initiative?.title)}
+            text="Удалить"
+            color="red"
+            onClick={deleteInitiativeHandler}
+            loading={loading} // Чтобы показать индикатор загрузки на кнопке
           />
           <Button
-            text={showUpdateForm ? 'Скрыть' : 'Изменить'}
-            color='#1a1a68'
+            text={showUpdateForm ? "Скрыть" : "Изменить"}
+            color="#1a1a68"
             onClick={() => setShowUpdateForm((prev) => !prev)}
           />
         </>

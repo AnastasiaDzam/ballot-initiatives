@@ -1,5 +1,6 @@
 const router = require("express").Router(); // метод который позволяет создать маршрут
 const initiativeController = require("../controllers/initiative.controller");
+const verifyAccessToken = require('../middleware/verifyAccessToken')
 
 router //! все эти ручки подключены на '/user' из index.routes.js
   //* Метод GET - получить всех user (запустит функцию контроллер для получения всех user)
@@ -9,12 +10,12 @@ router //! все эти ручки подключены на '/user' из index
   .get("/:id", initiativeController.getInitiativeById) // id - ключ из req.params
 
   //* Метод POST - создать user (запустит функцию контроллер для создания нового user)
-  .post("/", initiativeController.createInitiative)
+  .post("/", verifyAccessToken,initiativeController.createInitiative)
 
   //* Метод PUT - обновить user (запустит функцию контроллер для обновления user по id)
-  .put("/:id", initiativeController.updateInitiative)
+  .put("/:id", verifyAccessToken, initiativeController.updateInitiative)
 
   //* Метод DELETE - удалить user (запустит функцию контроллер для удаления user по id)
-  .delete("/:id", initiativeController.deleteInitiative);
+  .delete("/:id", verifyAccessToken, initiativeController.deleteInitiative);
 
 module.exports = router;
