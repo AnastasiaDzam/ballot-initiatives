@@ -7,11 +7,15 @@ import InitiativeUpdateForm from "../InitiativeUpdateForm/InitiativeUpdateForm";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
-export default function InitiativeCard({ initiative, setInitiatives, user }) {
+export default function InitiativeCard({
+  initiative,
+  setInitiatives,
+  user,
+  setViewInit,
+}) {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [showUpdateForm, setShowUpdateForm] = useState(false);
-
 
   const [isVote, setIsVote] = useState(false);
   async function deleteInitiativeHandler(title) {
@@ -31,6 +35,7 @@ export default function InitiativeCard({ initiative, setInitiatives, user }) {
         return;
       }
       if (statusCode === 200) {
+        setViewInit((prev) => [...prev].filter((el) => el.id !== data?.id));
         setInitiatives((prev) => [...prev].filter((el) => el.id !== data?.id));
         antMessage.success(message);
       }
@@ -44,7 +49,7 @@ export default function InitiativeCard({ initiative, setInitiatives, user }) {
   }
 
   function redirectButtonHandler() {
-    navigate(`/initiatives/${initiative?.content}/`);
+    navigate(`/initiatives/${initiative?.id}`);
     // antMessage.success(initiative.content)
   }
 

@@ -4,7 +4,7 @@ import Button from "../../shared/ui/Button/Button";
 import InitiativeCard from "../InitiativeCard/InitiativeCard";
 import styles from "../InitiativeCard/InitiativeCard.module.css";
 
-export default function InitiativesList({ initiatives, setInitiatives, user }) {
+export default function InitiativesList({ initiatives, setInitiatives, user, setViewInit }) {
 
   return (
     <div className={styles.container_in}>
@@ -16,6 +16,7 @@ export default function InitiativesList({ initiatives, setInitiatives, user }) {
             initiative={initiative}
             setInitiatives={setInitiatives}
             user={user}
+            setViewInit={setViewInit}
           />
         ))
       ) : (

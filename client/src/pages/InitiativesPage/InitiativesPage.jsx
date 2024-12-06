@@ -46,8 +46,8 @@ export default function InitiativesPage({ user }) {
     <div>
     <Dropdown setViewInit={setViewInit} viewInit={viewInit} initiatives={initiatives}/>
       {loading && <h3>Загрузка...</h3>}
-      {<InitiativeForm setInitiatives={setInitiatives} setLoading={setLoading} />}
-      <InitiativesList initiatives={viewInit} setInitiatives={setInitiatives} user={user} />
+      {<InitiativeForm setInitiatives={setInitiatives}  setViewInit={setViewInit} setLoading={setLoading} />}
+      <InitiativesList initiatives={viewInit} setInitiatives={setInitiatives} user={user} setViewInit={setViewInit} />
     </div>
   );
 }

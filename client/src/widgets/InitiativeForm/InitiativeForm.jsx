@@ -4,7 +4,7 @@ import Button from "../../shared/ui/Button/Button";
 import { message as antMessage } from "antd";
 import InitiativeApi from "../../entities/initiative/InitiativeApi";
 
-export default function InitiativeForm({ setInitiatives, setLoading }) {
+export default function InitiativeForm({ setInitiatives, setLoading,  setViewInit }) {
   const [inputs, setInputs] = useState({ title: "", content: "", level: "" });
 
   function onChangeHandler(e) {
@@ -32,6 +32,7 @@ export default function InitiativeForm({ setInitiatives, setLoading }) {
       antMessage.success(message);
       if (statusCode === 201) {
         setInitiatives((prev) => [...prev, data]);
+        setViewInit((prev) => [...prev, data])
         setInputs({ title: "", content: "", level: "" });
       }
     } catch (error) {
@@ -44,21 +45,36 @@ export default function InitiativeForm({ setInitiatives, setLoading }) {
 
   return (
     <div style={{display: 'flex', padding: '34px', justifyContent : 'center', flexDirection: 'column', width: '300px'}}>
-      <div>Создать</div>
-      <input value={inputs.title} name="title" onChange={onChangeHandler} />
-      <input value={inputs.body} name="body" onChange={onChangeHandler} />
-
-    <div>
-      <input className={styles.input} value={inputs.title} name="title" placeholder="Заголовок" onChange={onChangeHandler} />
-      <input className={styles.input} value={inputs.content} name="content" placeholder="Содержание" onChange={onChangeHandler} />
-      <input className={styles.input} value={inputs.level} name="level" placeholder="Округ" onChange={onChangeHandler} />
-
+      <div>
+       <input className={styles.input} value={inputs.title} name="title" placeholder="Заголовок" onChange={onChangeHandler} />
+       <input className={styles.input} value={inputs.content} name="content" placeholder="Содержание" onChange={onChangeHandler} />
+       <input className={styles.input} value={inputs.level} name="level" placeholder="Округ" onChange={onChangeHandler} />
+  </div>
       <Button
         text="Создать"
         color="#1a1a68"
         onClick={createInitiativeHandler}
         disabled={isEmptyFormData}
       />
+      
     </div>
   );
 }
+
+  // return (
+  //   
+  //   <div>
+  //     <input className={styles.input} value={inputs.title} name="title" placeholder="Заголовок" onChange={onChangeHandler} />
+  //     <input className={styles.input} value={inputs.content} name="content" placeholder="Содержание" onChange={onChangeHandler} />
+  //     <input className={styles.input} value={inputs.level} name="level" placeholder="Округ" onChange={onChangeHandler} />
+
+  //     <Button
+  //       text="Создать"
+  //       color="#1a1a68"
+  //       onClick={createInitiativeHandler}
+  //       disabled={isEmptyFormData}
+  //     />
+  //   </div>
+  // );}
+
+  
