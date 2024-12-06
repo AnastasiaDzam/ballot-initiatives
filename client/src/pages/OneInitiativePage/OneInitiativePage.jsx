@@ -32,8 +32,11 @@ export default function OneInitiativePage() {
 
   return (
     <div>
+      <div style={{flexDirection: 'column'}}>Уровень инициативы:{initiative && <div style={{width: '100px'}}>{initiative.level}</div>}</div>
       {loading && <h3>Загрузка...</h3>}
-      {initiative && <div>{initiative.title}</div>}
+      <h2>{initiative && <div>{initiative.title}</div>}</h2>
+      {initiative && <div>{initiative.content}</div>}
+      
     </div>
   );
 }

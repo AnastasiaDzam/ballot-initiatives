@@ -43,7 +43,8 @@ export default function InitiativeForm({ setInitiatives, setLoading }) {
   }
 
   return (
-    <div>
+    <div style={{display: 'flex', padding: '34px', justifyContent : 'center', flexDirection: 'column', width: '300px'}}>
+      <div>Создать</div>
       <input value={inputs.title} name="title" onChange={onChangeHandler} />
       <input value={inputs.body} name="body" onChange={onChangeHandler} />
       <Button

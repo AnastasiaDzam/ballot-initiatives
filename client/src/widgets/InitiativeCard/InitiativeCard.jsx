@@ -10,6 +10,7 @@ export default function InitiativeCard({ initiative, setInitiatives, user }) {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [showUpdateForm, setShowUpdateForm] = useState(false);
+  
   async function deleteInitiativeHandler(title) {
     if (user.id !== initiative?.user_id) {
       antMessage.error(`No rights to delete initiative? with id ${initiative?.id}`);
