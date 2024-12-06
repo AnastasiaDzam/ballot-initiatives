@@ -29,7 +29,7 @@ export default function InitiativeCard({
     try {
       const { data, message, error, statusCode } =
         await InitiativeApi.deleteInitiativeById(initiative?.id);
-
+ 
       if (error) {
         antMessage.error(error);
         return;
