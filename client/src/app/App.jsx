@@ -38,10 +38,7 @@ function App() {
         { path: "/", element: <MainPage /> },
         { path: "/signin", element: <SignInPage setUser={setUser} /> },
         { path: "/signup", element: <SignUpPage setUser={setUser} /> },
-        {
-          path: "/initiatives",
-          element: <InitiativesPage user={user}/>,
-        },
+        { path: "/initiatives", element: <InitiativesPage user={user} /> },
         { path: "/initiatives/:id", element: <OneInitiativePage /> },
         // { path: "/user", element: <UserPage /> },
       ],

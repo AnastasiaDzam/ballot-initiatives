@@ -35,9 +35,6 @@ export default function Navigation({ user, setUser }) {
     <div>
       <div className={styles.container}>
         {/* <Button text='main' onClick={() => navigate('/')} /> */}
-
-        
-
         <Link to='/initiatives'>
           <Button text='Initiatives' />
         </Link>

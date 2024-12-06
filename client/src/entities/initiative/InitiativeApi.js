@@ -1,9 +1,9 @@
-import { axiosInstance } from '../../shared/lib/axiosInstance';
+import { axiosInstance } from "../../shared/lib/axiosInstance";
 
 class InitiativeApi {
   static async getInitiatives() {
     try {
-      const { data } = await axiosInstance.get('/initiative');
+      const { data } = await axiosInstance.get("/initiative");      
       return data;
     } catch (error) {
       return error.response.data;
@@ -21,7 +21,8 @@ class InitiativeApi {
 
   static async createInitiative(newInitiative) {
     try {
-      const { data } = await axiosInstance.post('/initiative', newInitiative);
+      const { data } = await axiosInstance.post("/initiative", newInitiative);
+
       return data;
     } catch (error) {
       return error.response.data;
@@ -39,7 +40,10 @@ class InitiativeApi {
 
   static async updateInitiativeById(id, updatedInitiative) {
     try {
-      const { data } = await axiosInstance.put(`/initiative/${id}`, updatedInitiative);
+      const { data } = await axiosInstance.put(
+        `/initiative/${id}`,
+        updatedInitiative
+      );
       return data;
     } catch (error) {
       return error.response.data;

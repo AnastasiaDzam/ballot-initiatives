@@ -4,7 +4,7 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.bulkInsert(
-      "users",
+      "Users",
       [
         {
           userName: "Иван",
@@ -14,15 +14,13 @@ module.exports = {
           registration: "Федеральный округ",
           createdAt: new Date(),
           updatedAt: new Date(),
-          createdAt: new Date(),
-          updatedAt: new Date(),
         },
         {
           userName: "Сергей",
           userLastName: "Сергеев",
           email: "sergeev2@mail.ru",
           password: 123,
-          registration: 'Федеральный округ',
+          registration: "Федеральный округ",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -32,6 +30,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete("users", null, {});
+    await queryInterface.bulkDelete("Users", null, {});
   },
 };

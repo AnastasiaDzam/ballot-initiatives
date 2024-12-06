@@ -5,6 +5,8 @@ import UserValidator from '../../../../entities/user/User.validator';
 import UserApi from '../../../../entities/user/UserApi';
 import Button from '../../../../shared/ui/Button/Button';
 import { setAccessToken } from '../../../../shared/lib/axiosInstance';
+import styles from "../../../../widgets/InitiativeForm/InitiativeForm.module.css";
+
 
 //NOTE Компонент формы аутентификации, принимает тип формы (вход или регистрация) и функцию установки пользователя
 export default function AuthForm({ type, setUser }) {
@@ -121,7 +123,7 @@ export default function AuthForm({ type, setUser }) {
       <form onSubmit={submitHandler}>
         {' '}
         {/* Обработчик отправки формы */}
-        <input
+        <input className={styles.input}
           onChange={changeHandler} // Обработчик изменения для email
           type='email'
           name='email'
@@ -130,7 +132,7 @@ export default function AuthForm({ type, setUser }) {
           required
           autoFocus // Фокус на этом поле при загрузке формы
         />
-        <input
+        <input className={styles.input}
           onChange={changeHandler} // Обработчик изменения для пароля
           type='password'
           name='password'
@@ -139,7 +141,7 @@ export default function AuthForm({ type, setUser }) {
           required
         />
         {type === 'signup' && ( // Если форма регистрации
-          <input
+          <input className={styles.input}
             onChange={changeHandler} // Обработчик изменения для имени пользователя
             name='username'
             value={inputs.username}
